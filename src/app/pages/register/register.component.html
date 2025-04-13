@@ -1,0 +1,10 @@
+<div class="auth-container">
+  <h2>Regisztráció</h2>
+  <form (submit)="register()">
+    <input type="email" [(ngModel)]="email" name="email" placeholder="Email" required />
+    <input type="password" [(ngModel)]="password" name="password" placeholder="Jelszó" required />
+    <button type="submit">Regisztráció</button>
+    <p *ngIf="errorMessage">{{ errorMessage }}</p>
+  </form>
+  <p>Van már fiókod? <a routerLink="/login">Jelentkezz be</a></p>
+</div>

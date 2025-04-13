@@ -1,0 +1,64 @@
+<div class="food-container mat-elevation-z3">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Új étel hozzáadása</mat-card-title>
+      <mat-card-subtitle>Add meg az étel adatait</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form (submit)="addFood()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Étel neve</mat-label>
+          <input matInput [(ngModel)]="food.name" name="foodName" required>
+          <mat-icon matSuffix matTooltip="Add meg az étel teljes nevét">info</mat-icon>
+        </mat-form-field>
+
+        <mat-divider></mat-divider>
+        <h3>Tápanyag információk</h3>
+
+        <div class="nutrients-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Kalória (kcal)</mat-label>
+            <input matInput type="number" [(ngModel)]="food.calories" name="calories" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Fehérje (g)</mat-label>
+            <input matInput type="number" [(ngModel)]="food.protein" name="protein" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Szénhidrát (g)</mat-label>
+            <input matInput type="number" [(ngModel)]="food.carbs" name="carbs" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Zsír (g)</mat-label>
+            <input matInput type="number" [(ngModel)]="food.fat" name="fat" required>
+          </mat-form-field>
+        </div>
+
+        <div class="serving-size">
+          <h4>Adagméret: {{food.servingSize || 100}} g</h4>
+          <mat-slider min="50" max="500" step="10" discrete>
+            <input matSliderThumb [(ngModel)]="food.servingSize" name="servingSize">
+          </mat-slider>
+        </div>
+
+        <div class="health-score">
+          <h4>Egészségesség értékelés:</h4>
+          <mat-progress-bar mode="determinate" [value]="calculateHealthScore()" color="accent"></mat-progress-bar>
+        </div>
+
+        <div class="form-actions">
+          <button mat-raised-button color="primary" type="submit">
+            <mat-icon>add</mat-icon>Hozzáadás
+          </button>
+          <button mat-stroked-button color="warn" type="reset">
+            <mat-icon>cancel</mat-icon>Mégse
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

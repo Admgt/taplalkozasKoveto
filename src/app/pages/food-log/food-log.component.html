@@ -1,0 +1,108 @@
+<div class="egesz">
+<mat-card class="date-selector-card">
+  <mat-form-field appearance="fill">
+    <mat-label>Napló dátuma</mat-label>
+    <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" (dateChange)="onDateChange()">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+</mat-card>
+
+<mat-card class="log-container">
+  <mat-card-header>
+    <mat-card-title>Mai nap étkezései – {{ formatDate(selectedDate) }}</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <mat-card class="totals-card">
+      <mat-list>
+        <mat-list-item>
+          <span>Összes kalória: <strong>{{ totals.calories }} kcal</strong></span>
+        </mat-list-item>
+        <mat-list-item>
+          <span>Fehérje: {{ totals.protein }} g</span>
+        </mat-list-item>
+        <mat-list-item>
+          <span>Szénhidrát: {{ totals.carbs }} g</span>
+        </mat-list-item>
+        <mat-list-item>
+          <span>Zsír: {{ totals.fat }} g</span>
+        </mat-list-item>
+      </mat-list>
+    </mat-card>
+
+    <div *ngIf="foods.length > 0; else noData">
+      <mat-list>
+        <mat-list-item *ngFor="let food of foods" class="food-item">
+          <ng-container *ngIf="editMode !== food.id; else editForm">
+            <div class="food-item-content">
+              <mat-icon>restaurant</mat-icon>
+              <span>
+                <strong>{{ food.name }}</strong> – {{ food.calories }} kcal
+                ({{ food.protein }}g P / {{ food.carbs }}g C / {{ food.fat }}g Z) 
+              </span>
+              <div class="food-actions">
+                <button mat-icon-button color="primary" (click)="startEdit(food)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="deleteFood(food.id)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-template #editForm>
+            <form (ngSubmit)="saveEdit(food.id!)" class="edit-form">
+              <mat-form-field appearance="outline">
+                <mat-label>Név</mat-label>
+                <input matInput [(ngModel)]="editedFood.name" name="name" required>
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline">
+                <mat-label>Kalória</mat-label>
+                <input matInput type="number" [(ngModel)]="editedFood.calories" name="calories" required>
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline">
+                <mat-label>Fehérje (g)</mat-label>
+                <input matInput type="number" [(ngModel)]="editedFood.protein" name="protein" required>
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline">
+                <mat-label>Szénhidrát (g)</mat-label>
+                <input matInput type="number" [(ngModel)]="editedFood.carbs" name="carbs" required>
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline">
+                <mat-label>Zsír (g)</mat-label>
+                <input matInput type="number" [(ngModel)]="editedFood.fat" name="fat" required>
+              </mat-form-field>
+              
+              <div class="form-actions">
+                <button mat-raised-button color="primary" type="submit">
+                  <mat-icon>save</mat-icon> Mentés
+                </button>
+                <button mat-button type="button" (click)="cancelEdit()">Mégse</button>
+              </div>
+            </form>
+          </ng-template>
+        </mat-list-item>
+      </mat-list>
+    </div>
+
+    <ng-template #noData>
+      <mat-card class="empty-state">
+        <mat-icon>no_meals</mat-icon>
+        <p>Még nem adtál hozzá ételt a mai napra.</p>
+      </mat-card>
+    </ng-template>
+  </mat-card-content>
+</mat-card>
+
+<div class="actions">
+  <button mat-raised-button color="warn" (click)="logout()">
+    <mat-icon>logout</mat-icon> Kijelentkezés
+  </button>
+</div>
+</div>

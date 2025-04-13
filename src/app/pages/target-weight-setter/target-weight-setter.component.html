@@ -1,0 +1,12 @@
+<div class="goal-setter">
+  <label for="targetWeight">Cél súly ({{ getUnitLabel() }}):</label>
+  <input
+  #weightInput
+  type="number"
+  [value]="targetWeight"
+  (input)="onWeightChange(weightInput.valueAsNumber)"
+  id="targetWeight"
+/>
+  <span>{{ targetWeight | unitConversion:unit}}</span>
+  <p>Ajánlott napi kalóriabevitel: {{ recommendedCalories | number:'1.0-0' }} kcal</p>
+</div>

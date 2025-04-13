@@ -1,0 +1,26 @@
+<div class="container">
+    <h2>Heti statisztikák</h2>
+  
+    <div class="summary-box">
+      <p>Összes kalória: {{ totals.calories }} kcal</p>
+      <p>Fehérje: {{ totals.protein }} g</p>
+      <p>Szénhidrát: {{ totals.carbs }} g</p>
+      <p>Zsír: {{ totals.fat }} g</p>
+    </div>
+  
+    <div class="chart-container">
+      <canvas baseChart
+              [data]="barChartData"
+              [type]="'bar'"
+              [options]="{ responsive: true }">
+      </canvas>
+    </div>
+  
+    <div class="food-list">
+      <h3>Utolsó 7 nap étkezései:</h3>
+      <div *ngFor="let food of weeklyFoods">
+        {{ food.date }} – {{ food.name }} ({{ food.calories }} kcal)
+      </div>
+    </div>
+  </div>
+

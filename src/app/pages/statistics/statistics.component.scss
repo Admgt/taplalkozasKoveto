@@ -1,0 +1,62 @@
+:host {
+  display: block;
+  padding: 1rem;
+  min-height: auto; 
+  background-color: #f9f9f9;
+  position: relative; 
+  top: 0; 
+  overflow-y: visible;
+  }
+  
+  .container {
+    max-width: auto;
+    margin: 0 auto;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+  }
+  
+  .summary-box {
+    background: #f1f1f1;
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  }
+  
+  .chart-container {
+    margin: 2rem auto;
+    max-width: 100%;
+  }
+  
+  .chart-container canvas {
+    width: 100% !important;
+    height: auto !important;
+  }
+  
+  .food-list {
+    margin-top: 2rem;
+  }
+  
+  .food-list h3 {
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+  }
+  
+  .food-list div {
+    padding: 0.75rem 1rem;
+    background: #fff;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    border: 1px solid #ddd;
+  }
+  

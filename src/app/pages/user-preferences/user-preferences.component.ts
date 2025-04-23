@@ -29,7 +29,8 @@ export class UserPreferencesComponent {
     unit: 'metric',
     theme: 'light',
     language: 'en',
-    targetWeight: 80
+    targetWeight: 80,
+    currentWeight: 70
   };
 
   constructor(private userPreferencesService: UserPreferencesService, private authService: AuthService) {}

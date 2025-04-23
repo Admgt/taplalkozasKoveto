@@ -1,8 +1,17 @@
 <div class="home-container">
-    <h1>Üdv újra!</h1>
+  <h1>Üdv újra!</h1>
 
-    <nav>
-      <a routerLink="/food-log">🍽️ Étkezési napló</a>
-      <button (click)="logout()">🚪 Kijelentkezés</button>
-    </nav>
+  <div class="calorie-summary">
+    <p><strong>Napi célod:</strong> {{ dailyCalorieNeed }} kcal</p>
+    <p><strong>Eddig elfogyasztottad:</strong> {{ totalCaloriesToday }} kcal</p>
+    <p><strong>Hátralévő:</strong> {{ dailyCalorieNeed - totalCaloriesToday }} kcal</p>
   </div>
+
+  <h2>Mai ételek</h2>
+  <ul class="food-list">
+    <li *ngFor="let food of todaysFoods$ | async">
+      <span class="food-name">{{ food.name }}</span>
+      <span class="food-calories">{{ food.calories }} kcal</span>
+    </li>
+  </ul>
+</div>

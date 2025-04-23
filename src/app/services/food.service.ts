@@ -41,5 +41,15 @@ export class FoodService {
     const q = query(foodsRef, where('userId', '==', userId));
     return collectionData(q, { idField: 'id' }) as Observable<Food[]>;
   }
+
+  getFoodsForUserByDate(userId: string, date: string): Observable<Food[]> {
+    const foodsRef = collection(this.firestore, 'foods');
+    const q = query(
+      foodsRef,
+      where('userId', '==', userId),
+      where('date', '==', date)
+    );
+    return collectionData(q, { idField: 'id' }) as Observable<Food[]>;
+  }
 }
 

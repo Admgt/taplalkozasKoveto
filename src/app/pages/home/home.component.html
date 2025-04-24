@@ -1,15 +1,22 @@
 <div class="home-container">
-  <h1>Üdv újra!</h1>
+  <h1 class="welcome-text">Üdv újra!</h1>
 
-  <div class="calorie-summary">
+  <div class="card calorie-summary">
     <p><strong>Napi célod:</strong> {{ dailyCalorieNeed }} kcal</p>
     <p><strong>Eddig elfogyasztottad:</strong> {{ totalCaloriesToday }} kcal</p>
     <p><strong>Hátralévő:</strong> {{ dailyCalorieNeed - totalCaloriesToday }} kcal</p>
+    
+    <div class="progress-bar">
+      <div
+        class="progress"
+        [style.width.%]="(totalCaloriesToday / dailyCalorieNeed) * 100"
+      ></div>
+    </div>
   </div>
 
-  <h2>Mai ételek</h2>
+  <h2 class="section-title">Mai ételek</h2>
   <ul class="food-list">
-    <li *ngFor="let food of todaysFoods$ | async">
+    <li *ngFor="let food of todaysFoods$ | async" class="food-item card">
       <span class="food-name">{{ food.name }}</span>
       <span class="food-calories">{{ food.calories }} kcal</span>
     </li>

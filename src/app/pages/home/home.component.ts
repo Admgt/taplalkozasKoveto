@@ -4,11 +4,11 @@ import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { UserPreferences } from '../../models/user-preferences.model';
 import { Food } from '../../models/food.model';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, of, Subscription, switchMap } from 'rxjs';
 import { UserPreferencesService } from '../../services/user-preferences.service';
 import { FoodService } from '../../services/food.service';
 import { firstValueFrom } from 'rxjs';
-import { user } from '@angular/fire/auth';
+import { DailyFoodService } from '../../services/daily-food.service';
 
 @Component({
   selector: 'app-home',
@@ -24,32 +24,75 @@ export class HomeComponent implements OnInit {
   totalCaloriesToday: number = 0;
   userWeight: number = 0;
 
+  private refreshTrigger = new BehaviorSubject<boolean>(true);
+  private subscriptions: Subscription[] = [];
+
   constructor(private authService: AuthService,
     private router: Router,
     private userPrefService: UserPreferencesService,
-    private foodService: FoodService) {}
+    private foodService: FoodService,
+    private dailyFoodService: DailyFoodService) {
+      this.subscribeToFoodChanges();
+    }
+
+    subscribeToFoodChanges() {
+      const foodChangeSub = this.dailyFoodService.foodAdded$.subscribe(() => {
+        console.log('Új étel érkezett, frissítés...');
+        this.refreshFoods();
+      });
+      
+      this.subscriptions.push(foodChangeSub);
+    }
 
   async ngOnInit() {
-    const user = await firstValueFrom(this.authService.getCurrentUser());
-  if (!user) return;
-
-  const userData = await this.authService.getUserData(user.uid);
-  const prefs = await this.userPrefService.getPreferences(user.uid);
-
-  if (prefs && userData) {
-    this.userPreferences = prefs;
-    this.userWeight = userData.currentWeight; 
-    this.calculateDailyCalories();
+    await this.loadUserData();
+    await this.loadTodaysFoods();
   }
 
-  const today = new Date().toISOString().split('T')[0]; 
-  this.todaysFoods$ = this.foodService.getFoodsForUserByDate(user.uid, today);
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
 
-  this.todaysFoods$.pipe(
-    map(foods => foods.reduce((sum, food) => sum + food.calories, 0))
-  ).subscribe(total => {
-    this.totalCaloriesToday = total;
-  });
+  async loadUserData() {
+    const user = await firstValueFrom(this.authService.getCurrentUser());
+    if (!user) return;
+
+    const userData = await this.authService.getUserData(user.uid);
+    const prefs = await this.userPrefService.getPreferences(user.uid);
+
+    if (prefs && userData) {
+      this.userPreferences = prefs;
+      this.userWeight = userData.currentWeight;
+      this.calculateDailyCalories();
+    }
+  }
+
+  async loadTodaysFoods() {
+    const user = await firstValueFrom(this.authService.getCurrentUser());
+    if (!user) return;
+
+    const today = new Date().toISOString().split('T')[0];
+
+    this.todaysFoods$ = this.refreshTrigger.pipe(
+      switchMap(() => this.dailyFoodService.getDailyFoodsByDate(user.uid, today)),
+      switchMap(dailyFoods => {
+        const foodIds = dailyFoods.map(df => df.foodId);
+        if (foodIds.length === 0) return of([]);
+        return this.foodService.getFoodsByIds(foodIds);
+      })
+    );
+
+    const calorieSub = this.todaysFoods$.pipe(
+      map(foods => foods.reduce((sum, food) => sum + food.calories, 0))
+    ).subscribe(total => {
+      this.totalCaloriesToday = total;
+    });
+
+    this.subscriptions.push(calorieSub);
+  }
+
+  refreshFoods() {
+    this.refreshTrigger.next(true);
   }
   
   calculateDailyCalories() {

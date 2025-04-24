@@ -27,8 +27,8 @@ export class AddFoodComponent {
     protein: 0,
     carbs: 0,
     fat: 0,
-    date: new Date().toISOString().split('T')[0], 
-    userId: '', 
+    date: new Date().toISOString().split('T')[0],
+    userId: '',
     servingSize: 100,
   };
 

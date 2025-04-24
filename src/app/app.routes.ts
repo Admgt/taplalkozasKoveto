@@ -7,8 +7,10 @@ import { authGuard } from './guards/auth.guard';
 import { HomeComponent } from './pages/home/home.component';
 import { StatisticsComponent } from './pages/statistics/statistics.component';
 import { UserPreferencesComponent } from './pages/user-preferences/user-preferences.component';
+import { AllFoodsComponent } from './pages/all-foods/all-foods.component';
 
 export const routes: Routes = [
+    { path: 'all-foods', component: AllFoodsComponent, canActivate: [authGuard] },
     { path: 'profile', component: UserPreferencesComponent, canActivate: [authGuard] },
     { path: 'statistics', component: StatisticsComponent, canActivate: [authGuard] },
     { path: 'home', component: HomeComponent, canActivate: [authGuard] },

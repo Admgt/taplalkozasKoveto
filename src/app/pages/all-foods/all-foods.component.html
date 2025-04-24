@@ -1,0 +1,61 @@
+<div class="container">
+  <div class="search-container">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Keresés az ételek között</mat-label>
+      <input matInput placeholder="Étel neve" [formControl]="searchControl">
+      <button mat-icon-button matSuffix *ngIf="searchControl.value" (click)="searchControl.setValue('')" aria-label="Törlés">
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-icon matSuffix *ngIf="!searchControl.value">search</mat-icon>
+    </mat-form-field>
+  </div>
+  
+  <div class="food-grid">
+    <mat-card *ngFor="let food of filteredFoods$ | async" class="food-card mat-elevation-z3">
+      <mat-card-header>
+        <mat-card-title>{{ food.name }}</mat-card-title>
+        <mat-card-subtitle>{{ food.calories }} kcal</mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <div class="nutrition-grid">
+          <div class="nutrition-item">
+            <div class="nutrition-value">{{ food.protein }}g</div>
+            <div class="nutrition-label">Fehérje</div>
+          </div>
+          <div class="nutrition-item">
+            <div class="nutrition-value">{{ food.carbs }}g</div>
+            <div class="nutrition-label">Szénhidrát</div>
+          </div>
+          <div class="nutrition-item">
+            <div class="nutrition-value">{{ food.fat }}g</div>
+            <div class="nutrition-label">Zsír</div>
+          </div>
+          <div class="nutrition-item">
+            <div class="nutrition-value">{{ food.servingSize }}g</div>
+            <div class="nutrition-label">Mennyiség</div>
+          </div>
+        </div>
+      </mat-card-content>
+      
+      <mat-divider></mat-divider>
+      
+      <mat-card-actions align="end">
+        <button mat-icon-button color="accent" aria-label="Részletek">
+          <mat-icon>info</mat-icon>
+        </button>
+        <button mat-raised-button color="primary" (click)="addToToday(food)">
+          <mat-icon>add</mat-icon>
+          Hozzáadás a mai naphoz
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  
+  <div *ngIf="(filteredFoods$ | async)?.length === 0" class="no-data">
+    <mat-icon class="no-data-icon">search_off</mat-icon>
+    <h3>Nem találhatók ételek</h3>
+    <p *ngIf="searchControl.value">Próbálj meg más keresési feltételt használni.</p>
+    <p *ngIf="!searchControl.value">Még nincsenek hozzáadott ételek.</p>
+  </div>
+</div>

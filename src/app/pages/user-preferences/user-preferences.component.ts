@@ -8,6 +8,8 @@ import { TargetWeightSetterComponent } from "../target-weight-setter/target-weig
 import { User } from '../../models/user.model';
 import { AuthService } from '../../services/auth.service';
 import { UnitConversionPipe } from '../../pipes/unit-conversion.pipe';
+import { ThemeService } from '../../services/theme.service';
+import { doc, Firestore, setDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-user-preferences',
@@ -33,7 +35,7 @@ export class UserPreferencesComponent {
     currentWeight: 70
   };
 
-  constructor(private userPreferencesService: UserPreferencesService, private authService: AuthService) {}
+  constructor(private userPreferencesService: UserPreferencesService, private authService: AuthService, private themeService: ThemeService, private firestore: Firestore) {}
 
   async ngOnInit() {
     const authUser = getAuth().currentUser;
@@ -57,6 +59,13 @@ export class UserPreferencesComponent {
   async savePreferences() {
     await this.userPreferencesService.savePreferences(this.preferences);
     await this.authService.updateUserData(this.user);
+    this.authService.getCurrentUser().subscribe(async user => {
+      if (user) {
+        const userPrefRef = doc(this.firestore, 'userPreferences', user.uid);
+        await setDoc(userPrefRef, this.preferences);
+        this.themeService.setTheme(this.preferences.theme);
+      }
+    });
     alert('Beállítások mentve!');
   }
 

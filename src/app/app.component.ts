@@ -3,6 +3,11 @@ import { NavigationEnd, Router, RouterModule, RouterOutlet } from '@angular/rout
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { filter } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
+import { AuthService } from './services/auth.service';
+import { ThemeService } from './services/theme.service';
+import { UserPreferences } from './models/user-preferences.model';
+import { doc, Firestore, getDoc } from '@angular/fire/firestore';
+
 
 @Component({
   selector: 'app-root',
@@ -14,11 +19,29 @@ import { CommonModule } from '@angular/common';
 export class AppComponent {
   currentUrl: string = '';
 
-  constructor(public router: Router) {
+  constructor(public router: Router, private authService: AuthService, private firestore: Firestore, private themeService: ThemeService) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
       this.currentUrl = event.url;
+    });
+  }
+
+  ngOnInit() {
+    this.authService.getCurrentUser().subscribe(async user => {
+      if (user) {
+        const userPrefRef = doc(this.firestore, 'userPreferences', user.uid);
+        const userPrefSnap = await getDoc(userPrefRef);
+  
+        if (userPrefSnap.exists()) {
+          const data = userPrefSnap.data() as UserPreferences;
+          this.themeService.setTheme(data.theme || 'light');
+        } else {
+          this.themeService.setTheme('light');
+        }
+      } else {
+        this.themeService.setTheme('light');
+      }
     });
   }
 

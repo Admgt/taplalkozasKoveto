@@ -2,7 +2,7 @@
   display: block;
   padding: 1rem;
   min-height: auto; 
-  background-color: #f9f9f9;
+  background-color: var(--nagyobb-kontener);
   position: relative; 
   top: 0; 
   overflow-y: visible;
@@ -12,7 +12,7 @@
     max-width: auto;
     margin: 0 auto;
     padding: 2rem;
-    background: #fff;
+    background-color: var(--card-bg);
     border-radius: 16px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
   }
@@ -24,7 +24,7 @@
   }
   
   .summary-box {
-    background: #f1f1f1;
+    background: var(--nagyobb-kontener);
     padding: 1.5rem;
     border-radius: 12px;
     margin-bottom: 2rem;
@@ -41,6 +41,7 @@
   .chart-container canvas {
     width: 100% !important;
     height: auto !important;
+    color: var(--text-color);
   }
   
   .food-list {
@@ -54,7 +55,7 @@
   
   .food-list div {
     padding: 0.75rem 1rem;
-    background: #fff;
+    background: var(--nagyobb-kontener);
     border-radius: 8px;
     margin-bottom: 0.5rem;
     border: 1px solid #ddd;

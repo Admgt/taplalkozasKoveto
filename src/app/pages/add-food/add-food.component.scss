@@ -1,7 +1,24 @@
 .food-container {
+  background-color: var(--nagyobb-kontener);
   padding: 20px;
   max-width: 600px;
   margin: 0 auto;
+}
+
+.food-container mat-card {
+  background-color: var(--card-bg);
+}
+
+.food-container mat-card-subtitle {
+  color: var(--text-color);
+}
+
+.food-container mat-label {
+  color: var(--text-color);
+}
+
+.food-container input {
+  color: var(--text-color);
 }
 
 .full-width {
@@ -40,6 +57,8 @@
 }
 
 .form-actions button {
+  background-color: var(--logout-button-bg);
+  color: var(--text-color);
   min-width: 120px;
   border-radius: 24px;
   padding: 8px 20px;

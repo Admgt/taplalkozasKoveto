@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FoodService } from '../../services/food.service';
 import { getAuth } from '@angular/fire/auth';
 import { CommonModule } from '@angular/common';
 import { ChartConfiguration } from 'chart.js';
-import { NgChartsModule } from 'ng2-charts';
+import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { Food } from '../../models/food.model';
 import { FoodTotals } from '../../models/food-totals.model';
@@ -24,16 +24,7 @@ export class StatisticsComponent implements OnInit {
     fat: 0
   };
 
-  barChartData: ChartConfiguration<'bar'>['data'] = {
-    labels: [],
-    datasets: [
-      {
-        data: [],
-        label: 'Kalória (kcal)',
-        backgroundColor: '#42a5f5',
-      }
-    ]
-  };
+  @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
   constructor(private foodService: FoodService) {}
 
@@ -55,6 +46,35 @@ export class StatisticsComponent implements OnInit {
       this.updateChart();
     });
   }
+
+  barChartData: ChartConfiguration<'bar'>['data'] = {
+    labels: [],
+    datasets: [
+      {
+        data: [],
+        label: 'Kalória (kcal)',
+        backgroundColor: '#42a5f5',
+      }
+    ]
+  };
+
+  barChartOptions: ChartConfiguration<'bar'>['options'] = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        grid: {
+          color: 'rgba(224, 224, 224, 0.3)' 
+        }
+      },
+      y: {
+        grid: {
+          color: 'rgba(224, 224, 224, 0.3)' 
+        },
+        beginAtZero: true
+      }
+    }
+  };
 
   calculateTotals() {
     this.totals = { calories: 0, protein: 0, carbs: 0, fat: 0 };
@@ -83,5 +103,11 @@ export class StatisticsComponent implements OnInit {
 
     this.barChartData.labels = Object.keys(grouped);
     this.barChartData.datasets[0].data = Object.values(grouped);
+
+    setTimeout(() => {
+      if (this.chart) {
+        this.chart.update();
+      }
+    }, 0);
   }
 }

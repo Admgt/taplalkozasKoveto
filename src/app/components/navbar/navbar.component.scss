@@ -1,6 +1,7 @@
 .navbar {
   position: fixed;
-  background-color: #fff;
+  background-color: var(--card-bg);
+  color: var(--text-color);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   transition: all 0.3s ease;
@@ -21,7 +22,7 @@
   .navbar a {
     margin-bottom: 1rem;
     text-decoration: none;
-    color: #333;
+    color: var(--text-color);
     font-weight: 500;
     padding: 0.5rem;
   }
@@ -44,7 +45,7 @@
     display: block;
     margin-bottom: 1rem;
     text-decoration: none;
-    color: #333;
+    color: var(--text-color);
     font-weight: 500;
   }
 }

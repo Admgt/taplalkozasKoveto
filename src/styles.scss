@@ -1,0 +1,53 @@
+body.light-theme {
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --card-bg: #f9f9f9;
+  --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --progress-color: #76c7c0;
+  --section-title-color: #000000;
+  --logout-button-bg: #e57373;         
+  --logout-button-text: #ffffff;
+}
+
+body.dark-theme {
+  --bg-color: #121212;
+  --text-color: #e0e0e0;
+  --card-bg: #303030;
+  --nagyobb-kontener: #1e1d1d;
+  --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  --progress-color: #bb86fc;
+  --section-title-color: #e0e0e0;
+  --logout-button-bg: #4caf50;       
+  --logout-button-text: #121212;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.card {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  box-shadow: var(--card-shadow);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.progress-bar {
+  height: 12px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.progress {
+  background-color: var(--progress-color);
+}
+
+.welcome-text,
+.section-title {
+  color: var(--section-title-color);
+}
+

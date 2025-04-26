@@ -25,10 +25,10 @@
   border-radius: 8px;
   padding: 1rem;
   margin-bottom: 16px;
+}
 
-  * {
-    color: var(--text-color) !important;
-  }
+.totals-card span {
+  color: var(--text-color);
 }
 
 .food-item {
@@ -40,6 +40,7 @@
   display: flex;
   align-items: center;
   width: 100%;
+  color: var(--text-color);
   
   mat-icon {
     margin-right: 8px;
@@ -62,6 +63,14 @@
   padding: 16px 0;
 }
 
+.edit-form mat-label {
+  color: var(--text-color);
+}
+
+.edit-form input {
+  color: var(--text-color);
+}
+
 .form-actions {
   display: flex;
   gap: 16px;
@@ -82,15 +91,4 @@
     width: 48px;
     margin-bottom: 16px;
   }
-}
-
-.actions button {
-  background-color: var(--logout-button-bg);
-  color: var(--text-color);
-  font-weight: 600;
-  border-radius: 24px;
-}
-
-.actions button mat-icon {
-  color: var(--text-color);
 }

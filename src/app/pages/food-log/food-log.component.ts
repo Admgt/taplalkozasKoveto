@@ -46,12 +46,6 @@ export class FoodLogComponent implements OnInit {
 
   constructor(private foodService: FoodService, private authService: AuthService, private router: Router, private preferencesService: UserPreferencesService) {}
 
-  logout() {
-    this.authService.logout().then(() => {
-      this.router.navigate(['/login']);
-    });
-  }
-
   async ngOnInit() {
     const user = getAuth().currentUser;
     if (user) {

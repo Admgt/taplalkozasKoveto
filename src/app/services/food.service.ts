@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { addDoc, collection, collectionData, deleteDoc, doc, Firestore, getDoc, query, updateDoc, where } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Food } from '../models/food.model';
+import { DailyFood } from '../models/daily-food.model';
 
 @Injectable({
   providedIn: 'root'
@@ -68,6 +69,25 @@ export class FoodService {
   
     const results = await Promise.all(promises);
     return results.filter((food): food is Food => food !== null);
+  }
+
+  getWeeklyDailyFoods(userId: string) {
+    const today = new Date();
+    const weekAgo = new Date();
+    weekAgo.setDate(today.getDate() - 6);
+  
+    const start = weekAgo.toISOString().split('T')[0];
+    const end = today.toISOString().split('T')[0];
+  
+    const foodsCollection = collection(this.firestore, 'dailyFoods');
+    const q = query(
+      foodsCollection,
+      where('userId', '==', userId),
+      where('date', '>=', start),
+      where('date', '<=', end)
+    );
+  
+    return collectionData(q, { idField: 'id' }) as Observable<DailyFood[]>;
   }
 }
 

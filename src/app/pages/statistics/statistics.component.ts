@@ -4,9 +4,9 @@ import { getAuth } from '@angular/fire/auth';
 import { CommonModule } from '@angular/common';
 import { ChartConfiguration } from 'chart.js';
 import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
-import { NavbarComponent } from '../../components/navbar/navbar.component';
-import { Food } from '../../models/food.model';
 import { FoodTotals } from '../../models/food-totals.model';
+import { DailyFoodService } from '../../services/daily-food.service';
+import { DailyFood } from '../../models/daily-food.model';
 
 @Component({
   selector: 'app-statistics',
@@ -16,7 +16,7 @@ import { FoodTotals } from '../../models/food-totals.model';
   styleUrl: './statistics.component.scss'
 })
 export class StatisticsComponent implements OnInit {
-  weeklyFoods: Food[] = [];
+  weeklyFoods: DailyFood[] = [];
   totals: FoodTotals = {
     calories: 0,
     protein: 0,
@@ -26,22 +26,14 @@ export class StatisticsComponent implements OnInit {
 
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
-  constructor(private foodService: FoodService) {}
+  constructor(private foodService: FoodService, private dailyFoodService: DailyFoodService) {}
 
   ngOnInit() {
     const user = getAuth().currentUser;
     if (!user) return;
 
-    this.foodService.getFoodsForUser(user.uid).subscribe(foods => {
-      const today = new Date();
-      const weekAgo = new Date();
-      weekAgo.setDate(today.getDate() - 6);
-
-      this.weeklyFoods = foods.filter(food => {
-        const date = new Date(food.date);
-        return date >= weekAgo && date <= today;
-      });
-
+    this.foodService.getWeeklyDailyFoods(user.uid).subscribe(dailyFoods => {
+      this.weeklyFoods = dailyFoods;
       this.calculateTotals();
       this.updateChart();
     });
@@ -98,7 +90,9 @@ export class StatisticsComponent implements OnInit {
     }
 
     for (const food of this.weeklyFoods) {
-      grouped[food.date] += food.calories;
+      if (grouped.hasOwnProperty(food.date)) {
+        grouped[food.date] += food.calories;
+      }
     }
 
     this.barChartData.labels = Object.keys(grouped);

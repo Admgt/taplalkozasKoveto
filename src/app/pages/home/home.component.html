@@ -2,14 +2,18 @@
   <h1 class="welcome-text">Üdv újra!</h1>
 
   <div class="card calorie-summary">
-    <p><strong>Napi célod:</strong> {{ dailyCalorieNeed }} kcal</p>
+    <p><strong>Napi célod:</strong> {{ userWeight | dailyCalories:getGender():userPreferences?.unit }} kcal</p>
     <p><strong>Eddig elfogyasztottad:</strong> {{ totalCaloriesToday }} kcal</p>
-    <p><strong>Hátralévő:</strong> {{ dailyCalorieNeed - totalCaloriesToday }} kcal</p>
+    <p><strong>Hátralévő:</strong> 
+      {{
+        (userWeight | dailyCalories:getGender():userPreferences?.unit) - totalCaloriesToday
+      }} kcal
+    </p>
     
     <div class="progress-bar">
       <div
         class="progress"
-        [style.width.%]="(totalCaloriesToday / dailyCalorieNeed) * 100"
+        [style.width.%]="(totalCaloriesToday / (userWeight | dailyCalories:getGender():userPreferences?.unit)) * 100"
       ></div>
     </div>
   </div>

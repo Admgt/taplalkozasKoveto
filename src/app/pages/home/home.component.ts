@@ -9,11 +9,12 @@ import { UserPreferencesService } from '../../services/user-preferences.service'
 import { FoodService } from '../../services/food.service';
 import { firstValueFrom } from 'rxjs';
 import { DailyFoodService } from '../../services/daily-food.service';
+import { DailyCaloriesPipe } from '../../pipes/daily-calories.pipe';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, DailyCaloriesPipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -93,6 +94,10 @@ export class HomeComponent implements OnInit {
 
   refreshFoods() {
     this.refreshTrigger.next(true);
+  }
+
+  getGender(): 'férfi' | 'nő' {
+    return this.userPreferences?.gender === 'nő' ? 'nő' : 'férfi';
   }
   
   calculateDailyCalories() {

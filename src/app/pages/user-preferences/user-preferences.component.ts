@@ -30,7 +30,7 @@ export class UserPreferencesComponent {
     userId: '',
     unit: 'metric',
     theme: 'light',
-    language: 'en',
+    gender: 'man',
     targetWeight: 80,
     currentWeight: 70
   };

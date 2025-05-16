@@ -1,0 +1,58 @@
+<div class="food-item-container">
+  <ng-container *ngIf="!editMode; else editForm">
+    <div class="food-item-content">
+      <mat-icon>restaurant</mat-icon>
+      <span>
+        <strong>{{ food.name }}</strong> – {{ food.calories }} kcal
+        ({{ food.protein }}g P / {{ food.carbs }}g C / {{ food.fat }}g Z)
+        <span *ngIf="food.servingSize" class="serving-size">
+          {{ food.servingSize }}{{ getWeightUnit() }}
+        </span>
+      </span>
+      <div class="food-actions">
+        <button mat-icon-button color="primary" (click)="startEdit()">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deleteFood()">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #editForm>
+    <form (ngSubmit)="saveEdit()" class="edit-form">
+      <mat-form-field appearance="outline">
+        <mat-label>Név</mat-label>
+        <input matInput [(ngModel)]="editedFood.name" name="name" required>
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline">
+        <mat-label>Kalória</mat-label>
+        <input matInput type="number" [(ngModel)]="editedFood.calories" name="calories" required>
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline">
+        <mat-label>Fehérje (g)</mat-label>
+        <input matInput type="number" [(ngModel)]="editedFood.protein" name="protein" required>
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline">
+        <mat-label>Szénhidrát (g)</mat-label>
+        <input matInput type="number" [(ngModel)]="editedFood.carbs" name="carbs" required>
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline">
+        <mat-label>Zsír (g)</mat-label>
+        <input matInput type="number" [(ngModel)]="editedFood.fat" name="fat" required>
+      </mat-form-field>
+      
+      <div class="form-actions">
+        <button mat-raised-button color="primary" type="submit">
+          <mat-icon>save</mat-icon> Mentés
+        </button>
+        <button mat-button type="button" (click)="cancelEdit()">Mégse</button>
+      </div>
+    </form>
+  </ng-template>
+</div>

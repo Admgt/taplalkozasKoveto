@@ -1,0 +1,18 @@
+<div class="daily-food-list-container">
+  <h2 class="section-title">Mai ételek</h2>
+  <ul class="food-list">
+    <li *ngFor="let food of foods" class="food-item card">
+      <span class="food-name">{{ food.name }}</span>
+      <span class="food-calories">{{ food.calories }} kcal</span>
+      <button 
+        class="delete-btn" 
+        (click)="deleteFood(food.id || '')" 
+        aria-label="Étel törlése">
+        ✕
+      </button>
+    </li>
+    <li *ngIf="foods.length === 0" class="no-food-item">
+      Még nem adtál hozzá ételt a mai napra.
+    </li>
+  </ul>
+</div>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, query, where, collectionData } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, query, where, collectionData, getDocs, deleteDoc, doc } from '@angular/fire/firestore';
 import { DailyFood } from '../models/daily-food.model';
 import { firstValueFrom, Observable, Subject } from 'rxjs';
 import { Food } from '../models/food.model';
@@ -53,6 +53,28 @@ export class DailyFoodService {
       console.error('Hiba az étel hozzáadásakor:', error);
       alert('Hiba történt a hozzáadás során.');
       return false;
+    }
+  }
+
+  async removeDailyFood(userId: string, date: string, foodId: string): Promise<void> {
+    try {
+      const dailyFoodCollection = collection(this.firestore, 'dailyFoods');
+      const q = query(
+        dailyFoodCollection,
+        where('userId', '==', userId),
+        where('date', '==', date),
+        where('foodId', '==', foodId)
+      );
+
+      const querySnapshot = await getDocs(q);
+      
+      if (!querySnapshot.empty) {
+        const docToDelete = querySnapshot.docs[0];
+        await deleteDoc(doc(this.firestore, 'dailyFoods', docToDelete.id));
+      }
+    } catch (error) {
+      console.error('Hiba az étel eltávolításakor a napi listából:', error);
+      throw error;
     }
   }
 }

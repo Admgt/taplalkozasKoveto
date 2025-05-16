@@ -10,17 +10,19 @@ import { FoodService } from '../../services/food.service';
 import { firstValueFrom } from 'rxjs';
 import { DailyFoodService } from '../../services/daily-food.service';
 import { DailyCaloriesPipe } from '../../pipes/daily-calories.pipe';
+import { DailyFoodListComponent } from '../daily-food-list/daily-food-list.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, DailyCaloriesPipe],
+  imports: [CommonModule, RouterModule, DailyCaloriesPipe, DailyFoodListComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit {
   userPreferences?: UserPreferences;
   todaysFoods$!: Observable<Food[]>;
+  todaysFoods: Food[] = [];
   dailyCalorieNeed: number = 0;
   totalCaloriesToday: number = 0;
   userWeight: number = 0;
@@ -83,6 +85,11 @@ export class HomeComponent implements OnInit {
       })
     );
 
+    const foodsSub = this.todaysFoods$.subscribe(foods => {
+      this.todaysFoods = foods;
+    });
+    this.subscriptions.push(foodsSub);
+
     const calorieSub = this.todaysFoods$.pipe(
       map(foods => foods.reduce((sum, food) => sum + food.calories, 0))
     ).subscribe(total => {
@@ -100,6 +107,31 @@ export class HomeComponent implements OnInit {
     return this.userPreferences?.gender === 'nő' ? 'nő' : 'férfi';
   }
   
+  onFoodDeleted(foodId: string) {
+    this.removeFoodFromToday(foodId);
+  }
+
+  async removeFoodFromToday(foodId: string) {
+    try {
+      const user = await firstValueFrom(this.authService.getCurrentUser());
+      if (!user) return;
+
+      const today = new Date().toISOString().split('T')[0];
+      
+      await this.dailyFoodService.removeDailyFood(user.uid, today, foodId);
+      
+      this.refreshFoods();
+    } catch (error) {
+      console.error('Hiba történt az étel eltávolítása során:', error);
+    }
+  }
+
+  deleteDailyFood(foodId: string) {
+    this.foodService.deleteFood(foodId).then(() => {
+      this.refreshFoods();
+    });
+  }
+
   calculateDailyCalories() {
     if (!this.userPreferences || !this.userWeight) {
       this.dailyCalorieNeed = 0;

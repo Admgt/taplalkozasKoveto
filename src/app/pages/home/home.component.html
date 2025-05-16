@@ -18,11 +18,8 @@
     </div>
   </div>
 
-  <h2 class="section-title">Mai ételek</h2>
-  <ul class="food-list">
-    <li *ngFor="let food of todaysFoods$ | async" class="food-item card">
-      <span class="food-name">{{ food.name }}</span>
-      <span class="food-calories">{{ food.calories }} kcal</span>
-    </li>
-  </ul>
+  <app-daily-food-list 
+    [foods]="todaysFoods"
+    (foodDeleted)="onFoodDeleted($event)">
+  </app-daily-food-list>
 </div>

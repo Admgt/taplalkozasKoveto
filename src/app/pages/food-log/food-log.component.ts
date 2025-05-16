@@ -17,12 +17,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { UserPreferencesService } from '../../services/user-preferences.service';
-import { UnitConversionPipe } from '../../pipes/unit-conversion.pipe';
 
 @Component({
   selector: 'app-food-log',
   standalone: true,
-  imports: [CommonModule, NgFor, FormsModule, UnitConversionPipe, MatCardModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatIconModule, MatListModule, MatButtonModule],
+  imports: [CommonModule, NgFor, FormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatIconModule, MatListModule, MatButtonModule],
   templateUrl: './food-log.component.html',
   styleUrl: './food-log.component.scss'
 })

@@ -1,56 +1,81 @@
 <div class="settings-container" [ngClass]="{ 'dark-theme': preferences.theme === 'dark', 'light-theme': preferences.theme === 'light' }">
 
-    <h2>Profil beállítások</h2>
-  
-    <form (ngSubmit)="savePreferences()">
-      <div class="form-group">
-        <label for="unit">Mértékegység:</label>
-        <select [(ngModel)]="preferences.unit" name="unit" id="unit">
-          <option value="metric">Metrikus (kg, cm)</option>
-          <option value="imperial">Imperial (lbs, in)</option>
-        </select>
-      </div>
-  
-      <div class="form-group">
-        <label for="theme">Téma:</label>
-        <select [(ngModel)]="preferences.theme" name="theme" id="theme">
-          <option value="light">Világos</option>
-          <option value="dark">Sötét</option>
-        </select>
-        <p>(A téma aktiválásához rá kell menned a mentésre.)</p>
-      </div>
-  
-      <div class="form-group">
-        <label for="gender">Nem:</label>
-        <select [(ngModel)]="preferences.gender" name="gender" id="gender">
-          <option value="man">Férfi</option>
-          <option value="woman">Nő</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="currentWeight">Jelenlegi testsúly ({{ preferences.unit === 'metric' ? 'kg' : 'lbs' }}):</label>
-        <input
-          type="number"
-          id="currentWeight"
-          name="currentWeight"
-          [(ngModel)]="user.currentWeight"
-          *ngIf="user.currentWeight !== undefined"
-          required
-        />
-        <span class="unit-display">{{ user.currentWeight | unitConversion:preferences.unit }}</span>
-      </div>
-
-      <div class="form-group">
-        <app-target-weight-setter
-        [currentWeight]="user.currentWeight"
-        [targetWeight]="preferences.targetWeight"
-        [unit]="preferences.unit"
-        (targetWeightChanged)="onTargetWeightChanged($event)">
-      </app-target-weight-setter>
-      </div>
-  
-      <button type="submit">Mentés</button>
-    </form>
-  </div>
-  
+  <mat-card class="settings-card">
+    <mat-card-header>
+      <mat-card-title>
+        <h2>Profil beállítások</h2>
+      </mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <form (ngSubmit)="savePreferences()" #settingsForm="ngForm">
+        <mat-expansion-panel expanded>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Alapbeállítások</mat-panel-title>
+          </mat-expansion-panel-header>
+          
+          <div class="form-group">
+            <label for="unit">Mértékegység:</label>
+            <select [(ngModel)]="preferences.unit" name="unit" id="unit">
+              <option value="metric">Metrikus (kg, cm)</option>
+              <option value="imperial">Imperial (lbs, in)</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="theme">Téma:</label>
+            <select [(ngModel)]="preferences.theme" name="theme" id="theme">
+              <option value="light">Világos</option>
+              <option value="dark">Sötét</option>
+            </select>
+            <p class="hint-text">(A téma aktiválásához rá kell menned a mentésre.)</p>
+          </div>
+          
+          <div class="form-group">
+            <label for="gender">Nem:</label>
+            <select [(ngModel)]="preferences.gender" name="gender" id="gender">
+              <option value="man">Férfi</option>
+              <option value="woman">Nő</option>
+            </select>
+          </div>
+        </mat-expansion-panel>
+        
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Testsúly beállítások</mat-panel-title>
+          </mat-expansion-panel-header>
+          
+          <div class="form-group">
+            <label for="currentWeight">Jelenlegi testsúly ({{ preferences.unit === 'metric' ? 'kg' : 'lbs' }}):</label>
+            <input
+              type="number"
+              id="currentWeight"
+              name="currentWeight"
+              [(ngModel)]="user.currentWeight"
+              *ngIf="user.currentWeight !== undefined"
+              required
+            />
+            <span class="unit-display">{{ user.currentWeight | unitConversion:preferences.unit }}</span>
+          </div>
+          
+          <div class="form-group">
+            <app-target-weight-setter
+              [currentWeight]="user.currentWeight"
+              [targetWeight]="preferences.targetWeight"
+              [unit]="preferences.unit"
+              (targetWeightChanged)="onTargetWeightChanged($event)">
+            </app-target-weight-setter>
+          </div>
+          
+          <mat-divider></mat-divider>
+          
+          
+        </mat-expansion-panel>
+        
+        <div class="button-container">
+          <button mat-raised-button color="primary" type="submit">Mentés</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

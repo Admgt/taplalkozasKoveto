@@ -13,7 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDividerModule } from '@angular/material/divider';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
-@Component({
+@Component({  
   selector: 'app-all-foods',
   standalone: true,
   imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatInputModule, MatFormFieldModule, MatDividerModule, ReactiveFormsModule],
@@ -22,6 +22,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 })
 export class AllFoodsComponent {
   foods$!: Observable<Food[]>;
+
 
   searchControl = new FormControl('');
   filteredFoods$!: Observable<Food[]>;

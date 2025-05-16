@@ -10,11 +10,20 @@ import { AuthService } from '../../services/auth.service';
 import { UnitConversionPipe } from '../../pipes/unit-conversion.pipe';
 import { ThemeService } from '../../services/theme.service';
 import { doc, Firestore, setDoc } from '@angular/fire/firestore';
+import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatOptionModule } from '@angular/material/core';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatStepperModule } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-user-preferences',
   standalone: true,
-  imports: [CommonModule, FormsModule, TargetWeightSetterComponent, UnitConversionPipe],
+  imports: [CommonModule, FormsModule, TargetWeightSetterComponent, UnitConversionPipe, MatCardModule, MatExpansionModule, MatFormFieldModule, MatOptionModule, MatDividerModule, MatProgressBarModule,
+      MatStepperModule
+  ],
   templateUrl: './user-preferences.component.html',
   styleUrl: './user-preferences.component.scss'
 })

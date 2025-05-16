@@ -6,6 +6,7 @@
     label {
       font-weight: bold;
       margin-bottom: 0.5rem;
+      color: var(--text-color);
     }
   
     input {
@@ -14,6 +15,10 @@
       padding: 0.5rem;
       border-radius: 0.5rem;
       border: 1px solid #ccc;
+    }
+
+    span {
+      color: var(--text-color);
     }
   }
   

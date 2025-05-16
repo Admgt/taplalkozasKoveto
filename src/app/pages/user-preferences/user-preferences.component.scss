@@ -5,6 +5,22 @@
     background-color: var(--card-bg);;
     border-radius: 1rem;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+    .settings-card {
+      background-color: var(--nagyobb-kontener);
+    }
+
+    mat-expansion-panel {
+      background-color: var(--card-bg);
+    }
+
+    mat-panel-title {
+      color: var(--text-color);
+    }
+
+    span {
+      color: var(--text-color);
+    }
   
     h2 {
       text-align: center;
@@ -23,6 +39,7 @@
         label {
           font-weight: bold;
           margin-bottom: 0.5rem;
+          color: var(--text-color);
         }
 
         p {

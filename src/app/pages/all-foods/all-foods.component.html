@@ -41,9 +41,6 @@
       <mat-divider></mat-divider>
       
       <mat-card-actions align="end">
-        <button mat-icon-button color="accent" aria-label="Részletek">
-          <mat-icon>info</mat-icon>
-        </button>
         <button mat-raised-button color="primary" (click)="addToToday(food)">
           <mat-icon>add</mat-icon>
           Hozzáadás a mai naphoz
@@ -51,6 +48,8 @@
       </mat-card-actions>
     </mat-card>
   </div>
+
+  
   
   <div *ngIf="(filteredFoods$ | async)?.length === 0" class="no-data">
     <mat-icon class="no-data-icon">search_off</mat-icon>

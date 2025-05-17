@@ -10,12 +10,16 @@
   
   mat-icon {
     margin-right: 12px;
+    color: var(--text-color);
   }
   
   span {
     flex: 1;
+    color: var(--text-color);
   }
 }
+
+
 
 .food-actions {
   display: flex;
@@ -28,6 +32,14 @@
   gap: 12px;
   width: 100%;
   padding: 8px 0;
+
+  mat-label {
+    color: var(--text-color)
+  }
+
+  input {
+    color: var(--text-color);
+  }
   
   mat-form-field {
     flex: 1;

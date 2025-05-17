@@ -7,7 +7,7 @@
   transition: all 0.3s ease;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 1200px) {
   .navbar {
     top: 0;
     right: 0;
@@ -28,11 +28,11 @@
   }
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 1199px) {
   .navbar {
     top: 0;
     left: 0;
-    width: 97%;
+    width: 98%;
     height: auto;
     padding: 0.5rem;
     display: flex;
@@ -42,8 +42,10 @@
   }
   
   .navbar a {
-    display: block;
-    margin-bottom: 1rem;
+    display: flex;          /* Ezt add hozzá */
+    align-items: center;    /* Ezt add hozzá */
+    height: 100%;           /* Opcionális, de segít a függőleges középre igazításban */
+    margin-bottom: 0;  
     text-decoration: none;
     color: var(--text-color);
     font-weight: 500;

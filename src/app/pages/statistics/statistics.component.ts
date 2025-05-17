@@ -7,6 +7,8 @@ import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 import { FoodTotals } from '../../models/food-totals.model';
 import { DailyFoodService } from '../../services/daily-food.service';
 import { DailyFood } from '../../models/daily-food.model';
+import { Food } from '../../models/food.model';
+import { collection, DocumentData, getDocs, limit, orderBy, query, QueryDocumentSnapshot, startAfter, where } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-statistics',
@@ -17,6 +19,10 @@ import { DailyFood } from '../../models/daily-food.model';
 })
 export class StatisticsComponent implements OnInit {
   weeklyFoods: DailyFood[] = [];
+  latestFoods: Food[] = [];
+  paginatedFoods: Food[] = [];
+  lastFoodDoc: QueryDocumentSnapshot<DocumentData> | null = null;
+  showLoadMore = true;
   totals: FoodTotals = {
     calories: 0,
     protein: 0,
@@ -37,6 +43,12 @@ export class StatisticsComponent implements OnInit {
       this.calculateTotals();
       this.updateChart();
     });
+
+    this.foodService.getLatestFoods(user.uid).subscribe(foods => {
+      this.latestFoods = foods;
+    });
+
+    this.loadNextFoods();
   }
 
   barChartData: ChartConfiguration<'bar'>['data'] = {
@@ -103,5 +115,25 @@ export class StatisticsComponent implements OnInit {
         this.chart.update();
       }
     }, 0);
+  }
+
+  loadNextFoods() {
+    const user = getAuth().currentUser;
+    if (!user) return;
+
+    this.foodService.getFoodsPaginated(user.uid, this.lastFoodDoc).subscribe(result => {
+      if (result.foods.length === 0) {
+        this.showLoadMore = false;
+        return;
+      }
+
+      this.paginatedFoods.push(...result.foods);
+      this.lastFoodDoc = result.lastVisible;
+      this.showLoadMore = result.foods.length === 10; 
+    });
+  }
+
+  onLoadMore() {
+    this.loadNextFoods();
   }
 }

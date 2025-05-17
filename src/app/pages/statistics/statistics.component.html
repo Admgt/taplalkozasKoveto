@@ -22,5 +22,20 @@
         {{ food.date }} – {{ food.name }} ({{ food.calories }} kcal)
       </div>
     </div>
+
+    <div class="food-list">
+      <h3>Legfrissebb 5 étel:</h3>
+      <div *ngFor="let food of latestFoods">
+        {{ food.date }} – {{ food.name }} ({{ food.calories }} kcal)
+      </div>
+    </div>
+
+    <div class="food-list">
+      <h3>Hozzáadott ételek (lapozható):</h3>
+      <div *ngFor="let food of paginatedFoods">
+        {{ food.date }} – {{ food.name }} ({{ food.calories }} kcal)
+      </div>
+      <button *ngIf="showLoadMore" (click)="onLoadMore()">Több betöltése</button>
+    </div>
   </div>
 

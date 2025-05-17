@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, deleteDoc, doc, Firestore, getDoc, query, updateDoc, where } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { addDoc, collection, collectionData, deleteDoc, doc, DocumentData, Firestore, getDoc, getDocs, limit, orderBy, query, QueryDocumentSnapshot, startAfter, updateDoc, where } from '@angular/fire/firestore';
+import { from, map, Observable } from 'rxjs';
 import { Food } from '../models/food.model';
 import { DailyFood } from '../models/daily-food.model';
 
@@ -88,6 +88,52 @@ export class FoodService {
     );
   
     return collectionData(q, { idField: 'id' }) as Observable<DailyFood[]>;
+  }
+
+  getLatestFoods(userId: string): Observable<Food[]> {
+    const foodsRef = collection(this.firestore, 'foods');
+    const q = query(
+      foodsRef,
+      where('userId', '==', userId),
+      orderBy('date', 'desc'),
+      limit(5) 
+    );
+    return collectionData(q, { idField: 'id' }) as Observable<Food[]>;
+  }
+
+  getFoodsPaginated(userId: string, lastDoc?: QueryDocumentSnapshot<DocumentData> | null): Observable<{ foods: Food[], lastVisible: QueryDocumentSnapshot<DocumentData> | null }> {
+    const foodsRef = collection(this.firestore, 'foods');
+    let q;
+
+    if (lastDoc) {
+      q = query(
+        foodsRef,
+        where('userId', '==', userId),
+        orderBy('date', 'desc'), 
+        startAfter(lastDoc),
+        limit(10)
+      );
+    } else {
+      q = query(
+        foodsRef,
+        where('userId', '==', userId),
+        orderBy('date', 'desc'), 
+        limit(10)
+      );
+    }
+
+    return from(getDocs(q)).pipe(
+      map(querySnapshot => {
+        const foods = querySnapshot.docs.map(doc => ({
+          ...(doc.data() as Omit<Food, 'id'>),
+          id: doc.id
+        }));
+        
+        const lastVisible = querySnapshot.docs.length > 0 ? querySnapshot.docs[querySnapshot.docs.length - 1] : null;
+        
+        return { foods, lastVisible };
+      })
+    );
   }
 }
 
